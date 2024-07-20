@@ -11,6 +11,6 @@ import java.util.UUID;
 
 @Repository
 public interface TweetRepository extends JpaRepository<Tweet, UUID> {
-    @Query("SELECT t FROM Tweet t JOIN Like l ON t.id = l.tweetId WHERE l.userId = :userId")
+    @Query(value = "select t.* from tweets t where t.userid in (select l.userid from likes l where l.userid = :userId)", nativeQuery = true)
     List<Tweet> findTweetsLikedByUser(@Param("userId") UUID userId);
 }
