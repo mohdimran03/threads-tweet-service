@@ -19,6 +19,14 @@ public class Reply {
     @Column(nullable = false)
     private UUID userId;
 
+    @Column(nullable = false, length = 280)
+    private String content;
+
+    @Column(nullable = false)
+    private LocalDateTime createdAt;
+
+    //setters and getters
+
     public UUID getId() {
         return id;
     }
@@ -51,9 +59,6 @@ public class Reply {
         this.content = content;
     }
 
-    @Column(nullable = false, length = 280)
-    private String content;
-
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -61,9 +66,6 @@ public class Reply {
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
-
-    @Column(nullable = false)
-    private LocalDateTime createdAt;
 
     @Override
     public String toString() {

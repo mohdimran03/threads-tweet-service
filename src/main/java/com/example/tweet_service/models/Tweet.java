@@ -12,6 +12,19 @@ public class Tweet {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
+    @Column(nullable = false)
+    private UUID userId;
+
+    @Column(nullable = false, length = 280)
+    private String content;
+
+    @Column(nullable = false)
+    private LocalDateTime createdAt;
+
+    @Column(nullable = false)
+    private LocalDateTime updatedAt;
+
+    // setters and getters
     public UUID getId() {
         return id;
     }
@@ -36,12 +49,6 @@ public class Tweet {
         this.content = content;
     }
 
-    @Column(nullable = false)
-    private UUID userId;
-
-    @Column(nullable = false, length = 280)
-    private String content;
-
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -57,12 +64,6 @@ public class Tweet {
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
-
-    @Column(nullable = false)
-    private LocalDateTime createdAt;
-
-    @Column(nullable = false)
-    private LocalDateTime updatedAt;
 
     @Override
     public String toString() {
