@@ -8,6 +8,20 @@ import java.util.UUID;
 @Entity
 @Table(name = "Re_tweets")
 public class Retweet {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID id;
+
+    @Column(nullable = false)
+    private UUID originalTweetId;
+
+    @Column(nullable = false)
+    private UUID userId;
+
+    @Column(nullable = false)
+    private LocalDateTime createdAt;
+
+    //setters and getters
 
     public UUID getId() {
         return id;
@@ -33,16 +47,6 @@ public class Retweet {
         this.userId = userId;
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
-
-    @Column(nullable = false)
-    private UUID originalTweetId;
-
-    @Column(nullable = false)
-    private UUID userId;
-
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -50,9 +54,6 @@ public class Retweet {
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
-
-    @Column(nullable = false)
-    private LocalDateTime createdAt;
 
     @Override
     public String toString() {
