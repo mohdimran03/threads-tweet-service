@@ -10,6 +10,7 @@ import com.example.tweet_service.repository.LikeRepository;
 import com.example.tweet_service.repository.ReplyRepository;
 import com.example.tweet_service.repository.RetweetRepository;
 import com.example.tweet_service.repository.TweetRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,6 +47,7 @@ public class TweetService {
                 .orElseThrow(() -> new RuntimeException("Tweet not found"));
     }
 
+    @Transactional
     public void deleteTweet(UUID tweetId) {
         tweetRepository.deleteById(tweetId);
         likeRepository.deleteByTweetId(tweetId);
@@ -65,6 +67,13 @@ public class TweetService {
         }
     }
 
+    @Transactional
+    public void removeLike(UUID tweetId, UUID userId) {
+        Like like = likeRepository.findByTweetIdAndUserId(tweetId, userId)
+                .orElseThrow(() -> new RuntimeException("Like not found"));
+        likeRepository.delete(like);
+    }
+
     public void retweet(UUID tweetId, UUID userId) {
         if (!retweetRepository.existsByOriginalTweetIdAndUserId(tweetId, userId)) {
             Retweet retweet = new Retweet();
@@ -77,6 +86,13 @@ public class TweetService {
         }
     }
 
+    @Transactional
+    public void removeRetweet(UUID tweetId, UUID userId) {
+        Retweet retweet = retweetRepository.findByOriginalTweetIdAndUserId(tweetId, userId)
+                .orElseThrow(() -> new RuntimeException("Retweet not found"));
+        retweetRepository.delete(retweet);
+    }
+
     public Reply replyToTweet(UUID tweetId, ReplyRequest request) {
         Reply reply = new Reply();
         reply.setTweetId(tweetId);
@@ -86,11 +102,24 @@ public class TweetService {
         return replyRepository.save(reply);
     }
 
+    @Transactional
+    public void deleteReply(UUID replyId) {
+        replyRepository.deleteById(replyId);
+    }
+
     public List<Reply> getReplies(UUID tweetId) {
         return replyRepository.findByTweetId(tweetId);
     }
 
     public List<Tweet> getLikedTweets(UUID userId) {
         return tweetRepository.findTweetsLikedByUser(userId);
+    }
+
+    public List<Retweet> getRetweets(UUID tweetId) {
+        return retweetRepository.findByOriginalTweetId(tweetId);
+    }
+
+    public List<Tweet> getUserTweets(UUID userId) {
+        return tweetRepository.findByUserId(userId);
     }
 }
