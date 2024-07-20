@@ -4,6 +4,7 @@ import com.example.tweet_service.models.Like;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -16,4 +17,6 @@ public interface LikeRepository extends JpaRepository<Like, UUID> {
 
     // Custom method to find a like by tweet ID and user ID
     boolean existsByTweetIdAndUserId(UUID tweetId, UUID userId);
+
+    Optional<Like> findByTweetIdAndUserId(UUID tweetId, UUID userId);
 }

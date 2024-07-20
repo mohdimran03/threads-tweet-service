@@ -4,6 +4,8 @@ import com.example.tweet_service.models.Retweet;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -15,4 +17,8 @@ public interface RetweetRepository extends JpaRepository<Retweet, UUID> {
     void deleteByOriginalTweetId(UUID originalTweetId);
 
     boolean existsByOriginalTweetIdAndUserId(UUID originalTweetId, UUID userId);
+
+    Optional<Retweet> findByOriginalTweetIdAndUserId(UUID originalTweetId, UUID userId);
+
+    List<Retweet> findByOriginalTweetId(UUID originalTweetId);
 }

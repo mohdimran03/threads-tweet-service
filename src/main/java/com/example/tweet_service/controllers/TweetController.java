@@ -5,6 +5,7 @@ import com.example.tweet_service.dtos.ReplyRequest;
 import com.example.tweet_service.dtos.RetweetRequest;
 import com.example.tweet_service.dtos.TweetRequest;
 import com.example.tweet_service.models.Reply;
+import com.example.tweet_service.models.Retweet;
 import com.example.tweet_service.models.Tweet;
 import com.example.tweet_service.services.TweetService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +51,13 @@ public class TweetController {
         return ResponseEntity.ok("Tweet liked successfully");
     }
 
+    // Remove like from a tweet
+    @DeleteMapping("/{tweetId}/like")
+    public ResponseEntity<String> removeLike(@PathVariable UUID tweetId, @RequestBody LikeRequest request) {
+        tweetService.removeLike(tweetId, request.getUserId());
+        return ResponseEntity.ok("Like removed successfully");
+    }
+
     // Retweet a tweet
     @PostMapping("/{tweetId}/retweet")
     public ResponseEntity<String> retweet(@PathVariable UUID tweetId, @RequestBody RetweetRequest request) {
@@ -57,11 +65,25 @@ public class TweetController {
         return ResponseEntity.ok("Tweet retweeted successfully");
     }
 
+    // Remove retweet
+    @DeleteMapping("/{tweetId}/retweet")
+    public ResponseEntity<String> removeRetweet(@PathVariable UUID tweetId, @RequestBody RetweetRequest request) {
+        tweetService.removeRetweet(tweetId, request.getUserId());
+        return ResponseEntity.ok("Retweet removed successfully");
+    }
+
     // Reply to a tweet
     @PostMapping("/{tweetId}/reply")
     public ResponseEntity<Reply> replyToTweet(@PathVariable UUID tweetId, @RequestBody ReplyRequest request) {
         Reply reply = tweetService.replyToTweet(tweetId, request);
         return ResponseEntity.status(HttpStatus.CREATED).body(reply);
+    }
+
+    // Delete a reply
+    @DeleteMapping("/{tweetId}/reply/{replyId}")
+    public ResponseEntity<String> deleteReply(@PathVariable UUID tweetId, @PathVariable UUID replyId) {
+        tweetService.deleteReply(replyId);
+        return ResponseEntity.ok("Reply deleted successfully");
     }
 
     // Get replies to a tweet
@@ -77,5 +99,18 @@ public class TweetController {
         List<Tweet> tweets = tweetService.getLikedTweets(userId);
         return ResponseEntity.ok(tweets);
     }
-}
 
+    // Get retweets of a tweet
+    @GetMapping("/{tweetId}/retweets")
+    public ResponseEntity<List<Retweet>> getRetweets(@PathVariable UUID tweetId) {
+        List<Retweet> retweets = tweetService.getRetweets(tweetId);
+        return ResponseEntity.ok(retweets);
+    }
+
+    // Get all tweets of a user
+    @GetMapping("/users/{userId}/tweets")
+    public ResponseEntity<List<Tweet>> getUserTweets(@PathVariable UUID userId) {
+        List<Tweet> tweets = tweetService.getUserTweets(userId);
+        return ResponseEntity.ok(tweets);
+    }
+}
