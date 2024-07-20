@@ -13,6 +13,17 @@ public class Like {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
+    @Column(nullable = false)
+    private UUID tweetId;
+
+    @Column(nullable = false)
+    private UUID userId;
+
+    @Column(nullable = false)
+    private LocalDateTime createdAt;
+
+    //setters and getters
+
     public UUID getId() {
         return id;
     }
@@ -37,12 +48,6 @@ public class Like {
         this.userId = userId;
     }
 
-    @Column(nullable = false)
-    private UUID tweetId;
-
-    @Column(nullable = false)
-    private UUID userId;
-
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -50,9 +55,6 @@ public class Like {
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
-
-    @Column(nullable = false)
-    private LocalDateTime createdAt;
 
     @Override
     public String toString() {
