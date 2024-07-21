@@ -2,6 +2,8 @@ package com.example.tweet_service.services;
 
 import com.example.tweet_service.dtos.ReplyRequest;
 import com.example.tweet_service.dtos.TweetRequest;
+import com.example.tweet_service.kafka.KafkaProducerService;
+import com.example.tweet_service.kafka.events.NotificationEvent;
 import com.example.tweet_service.models.Like;
 import com.example.tweet_service.models.Reply;
 import com.example.tweet_service.models.Retweet;
@@ -33,6 +35,9 @@ public class TweetService {
     @Autowired
     private ReplyRepository replyRepository;
 
+    @Autowired
+    private KafkaProducerService kafkaProducerService;
+
     public Tweet createTweet(TweetRequest request) {
         Tweet tweet = new Tweet();
         tweet.setUserId(request.getUserId());
@@ -62,6 +67,14 @@ public class TweetService {
             like.setUserId(userId);
             like.setCreatedAt(LocalDateTime.now());
             likeRepository.save(like);
+
+            String topic = "notification-topic";
+            NotificationEvent event = new NotificationEvent();
+            event.setUserId(userId);
+            event.setType("Liked");
+            event.setContent("liked your tweet");
+
+            kafkaProducerService.sendMessage(topic, event);
         } else {
             throw new RuntimeException("User already liked this tweet");
         }
