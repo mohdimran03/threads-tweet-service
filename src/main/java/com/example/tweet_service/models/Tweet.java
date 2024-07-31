@@ -3,6 +3,8 @@ package com.example.tweet_service.models;
 import jakarta.persistence.*;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -23,6 +25,9 @@ public class Tweet {
 
     @Column(nullable = false)
     private LocalDateTime updatedAt;
+
+    @Column(name = "hashtagIds")
+    private List<UUID> hashtagIds = new ArrayList<>();
 
     // setters and getters
     public UUID getId() {
@@ -64,6 +69,15 @@ public class Tweet {
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
+
+    public List<UUID> getHashtagIds() {
+        return hashtagIds;
+    }
+
+    public void setHashtagIds(List<UUID> hashtagIds) {
+        this.hashtagIds = hashtagIds;
+    }
+
 
     @Override
     public String toString() {
