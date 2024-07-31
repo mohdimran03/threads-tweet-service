@@ -4,6 +4,7 @@ import com.example.tweet_service.dtos.LikeRequest;
 import com.example.tweet_service.dtos.ReplyRequest;
 import com.example.tweet_service.dtos.RetweetRequest;
 import com.example.tweet_service.dtos.TweetRequest;
+import com.example.tweet_service.models.Hashtag;
 import com.example.tweet_service.models.Reply;
 import com.example.tweet_service.models.Retweet;
 import com.example.tweet_service.models.Tweet;
@@ -12,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.UUID;
 
@@ -113,4 +113,25 @@ public class TweetController {
         List<Tweet> tweets = tweetService.getUserTweets(userId);
         return ResponseEntity.ok(tweets);
     }
+
+    @GetMapping("/users/{userId}/following")
+    public ResponseEntity<?>getFollowingTimeline(@PathVariable UUID userId) {
+        return tweetService.getFollowingTweetsByUserId(userId);
+    }
+
+    @GetMapping("/users/{userId}/explore")
+    public ResponseEntity<?>getExplore(@PathVariable UUID userId) {
+        return tweetService.getExplore(userId);
+    }
+
+    @GetMapping("/trending-hashtags")
+    public ResponseEntity<?>getTrendingHashtags() {
+        return tweetService.getTrendingHashtags();
+    }
+
+    @GetMapping("/hashtag/tweets")
+    public ResponseEntity<?>getTweetsByHashTag(@RequestParam String hashtag) {
+        return tweetService.getTweetsByHashtag(hashtag);
+    }
+
 }
