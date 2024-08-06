@@ -46,8 +46,8 @@ public class TweetController {
 
     // Like a tweet
     @PostMapping("/{tweetId}/like")
-    public ResponseEntity<String> likeTweet(@PathVariable UUID tweetId, @RequestBody LikeRequest request) {
-        tweetService.likeTweet(tweetId, request.getUserId());
+    public ResponseEntity<String> likeTweet(@PathVariable UUID tweetId, @RequestParam UUID userId) {
+        tweetService.likeTweet(tweetId, userId);
         return ResponseEntity.ok("Tweet liked successfully");
     }
 

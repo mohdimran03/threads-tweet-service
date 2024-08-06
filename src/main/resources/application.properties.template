@@ -12,5 +12,10 @@ spring.jpa.properties.hibernate.format_sql=true
 logging.level.root=INFO
 logging.level.org.springframework.web=DEBUG
 
-eureka.client.service-url.defaultZone=
+spring.kafka.bootstrap-servers=
+spring.kafka.consumer.group-id=threads-notification-service
+spring.kafka.consumer.enable-auto-commit=true
+
+eureka.client.serviceUrl.defaultZone:http:
 eureka.client.register-with-eureka=true
+
