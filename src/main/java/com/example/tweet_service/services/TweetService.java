@@ -114,6 +114,7 @@ public class TweetService {
 
             String topic = "notification-topic";
             NotificationEvent event = new NotificationEvent();
+            event.setTweetId(tweetId);
             event.setUserId(userId);
             event.setType("Liked");
             event.setContent("liked your tweet");
@@ -138,6 +139,14 @@ public class TweetService {
             retweet.setUserId(userId);
             retweet.setCreatedAt(LocalDateTime.now());
             retweetRepository.save(retweet);
+
+            String topic = "notification-topic";
+            NotificationEvent event = new NotificationEvent();
+            event.setUserId(userId);
+            event.setType("Retweet");
+            event.setContent("retweeted your tweet");
+
+            kafkaProducerService.sendMessage(topic, event);
         } else {
             throw new RuntimeException("User already retweeted this tweet");
         }
@@ -156,6 +165,14 @@ public class TweetService {
         reply.setUserId(request.getUserId());
         reply.setContent(request.getContent());
         reply.setCreatedAt(LocalDateTime.now());
+
+        String topic = "notification-topic";
+        NotificationEvent event = new NotificationEvent();
+        event.setUserId(request.getUserId());
+        event.setType("Replied");
+        event.setContent("Replied to your tweet");
+
+        kafkaProducerService.sendMessage(topic, event);
         return replyRepository.save(reply);
     }
 
